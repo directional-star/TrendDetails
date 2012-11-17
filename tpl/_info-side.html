@@ -1,0 +1,65 @@
+    <div id="info-side">
+      <div id="info-left">
+        <div class="info-box" id="info-news">
+            <h2>Related news</h2>
+            <div class="results" data-plugin="news">
+{% if articles.news %}{% for result in articles.news %}
+{% include "_template_result.html" %}
+{% endfor %}{% endif %}
+            </div>
+        </div>
+
+        <div class="info-box" id="info-bing">
+            <h2>Web search results</h2>
+            <div class="results" data-plugin="bing">
+{% if articles.bing %}{% for result in articles.bing %}
+{% include "_template_result.html" %}
+{% endfor %}{% endif %}
+            </div>
+        </div>
+
+        <div class="info-box" id="info-wiki">
+            <h2>Wikipedia articles</h2>
+            <div class="results" data-plugin="wiki">
+{% if articles.wiki %}{% for result in articles.wiki %}
+{% include "_template_result.html" %}
+{% endfor %}{% endif %}
+            </div>
+        </div>
+      </div>
+      <div id="info-right">
+
+        <div class="info-box" id="info-blogs">
+            <h2>Related blog posts</h2>
+            <div class="results" data-plugin="blogs">
+{% if articles.blogs %}{% for result in articles.blogs %}
+{% include "_template_result.html" %}
+{% endfor %}{% endif %}
+            </div>
+        </div>
+{% if admin %}
+        <div class="info-box" id="info-adsense">
+        <script type="text/javascript">
+        <!--
+          google_ad_client = "ca-pub-3312872362935851";
+          /* Trendy News Ads */
+          google_ad_slot = "8827935607";
+          google_ad_width = 300;
+          google_ad_height = 250;
+        //-->
+        </script>
+        <script type="text/javascript"
+          src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script>
+        </div>
+{% endif %}
+
+        <div class="info-box" id="info-twitter">
+            <h2>Topical Tweets</h2>
+            <div class="results" data-plugin="twitter">
+            </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+

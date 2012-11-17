@@ -1,0 +1,22 @@
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.scrollTo-1.4.2-min.js"></script>
+  <script type="text/javascript" src="/js/notify/jquery.notify.js"></script>
+  <script type="text/javascript" src="/js/jscrollpane/jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="/js/jscrollpane/jquery.jscrollpane.min.js"></script>
+  <script type="text/javascript" src="/js/keywordsEvent.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/js/notify/ui.notify.css">
+  <link rel="stylesheet" type="text/css" href="/js/jscrollpane/jquery.jscrollpane.css">
+
+  <script type="text/javascript">
+    window.onerror = function (msg, url, line) {
+        $.get('/jserror', {message:msg, url:url, line:line});
+    };
+
+    $( function() {
+      $('#messages').notify({expire:500,custom:true});
+      $('body').removeClass('loading');
+    });
+  </script>

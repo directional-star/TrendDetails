@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://trendy-news.directionalstar.com/</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.5</priority>
+  </url>
+{% for topic in topics.keywords %}
+  <url>
+    <loc>http://trendy-news.directionalstar.com/#!{{ topic|urlencode }}</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+{% endfor %}
+</urlset>

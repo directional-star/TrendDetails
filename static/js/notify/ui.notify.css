@@ -1,0 +1,36 @@
+.ui-notify { 
+    width:350px; 
+}
+.ui-notify .ui-notify-message {
+    margin-bottom:15px; 
+}
+.ui-notify .ui-notify-message:last-child { 
+    margin-bottom:0 
+}
+.ui-notify .ui-notify-close{
+    float: right;
+    display: inline;
+    padding: 1px;
+    background: none;
+    border: 1px solid transparent;      
+}
+.ui-notify .ui-notify-close span{
+    display: block;
+    padding: 1px;
+}
+.ui-notify .ui-notify-message .ui-widget-header {
+    padding: 2px 4px;    
+}
+.ui-notify .ui-notify-message .ui-widget-content,.ui-notify .ui-state-error .ui-state-error .ui-notify-error-content, .ui-notify .ui-notify-message .ui-state-highlight .ui-notify-highlight-content{ 
+    padding: .8em 1em;   
+}
+.ui-notify .ui-state-error .ui-state-error{
+    border: 1px none red;
+}
+.ui-notify .ui-state-error .ui-state-error .ui-notify-error-content, .ui-notify .ui-notify-message .ui-state-highlight .ui-notify-highlight-content{
+    margin-left: 18px;
+}
+.ui-notify .ui-state-error .ui-state-error .ui-icon-alert, .ui-notify .ui-notify-message .ui-state-highlight .ui-icon-info{
+    margin: .8em 7px 0px;
+    float: left;
+}

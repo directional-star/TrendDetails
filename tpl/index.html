@@ -1,0 +1,111 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Check the daily hot news from multiple sources. DS Trendy News reflects the pulse OF THE PLANET on any given day." />
+  <meta name="keywords" content="trendy, news, hot, topics, {{ keywords|join:", " }}" />
+  <meta name="author" content="Directional Star" />
+  <title>DS Trendy News</title>
+  {% include "_ga.html" %}
+  <style type="text/css">
+  body.loading #box {opacity:0;}
+  body.loading #loading {display:block;}
+  body.loading #messages {display:none;}
+  </style>
+  <!--[if lt IE 9]>
+  <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+  <![endif]-->
+</head>
+<body class="loading">
+  <div id="box">
+    <header>
+    <h1><a href="http://directionalstar.com" title="Directional Star" target="_blank"><img id="logo" src="/img/logo.png">DS</a> <a href="/" title="home">Trendy News</a></h1>
+    <h2>Manage News and Information Overload. Identify Trends. Subscribe Today</h2>
+    <div id="topright">
+      <div id="nextupdate">
+        <span class="tense">next</span> keyword update: <span class="time"></span><br>
+        <a id="autoupdate">autoupdate <span class="status" data-status="{{ userData.settings.autoupdate|lower }}">{{ userData.settings.autoupdate|yesno:'on,off' }}</span></a>
+      </div>
+      <a href="/home">user home</a><span class="loggedin" style="display:none;"> | <a href="/logout">logout</a></span>
+    </div>
+    </header>
+
+    <div id="keyword-side" class="keyfocus"><div id="keyword-side-inner">
+        <h2>Hot topics for <a id="keyword-date">today</a><input type="hidden" name="day" id="day" value="{{ day }}"></h2>
+        <div class="keyword-notes" id="keyword-ordering-outer">ordered by: <a id="keyword-ordering" data-ordering="latest">latest first</a></div>
+        <div class="keyword-notes">list <a href="/favorites">your favorites</a> instead</div>
+
+        {% if not keywords %}
+            <div class="keyword-empty">No keywords found.</div>
+        {% endif %}
+
+{% include "_keyword-list.html" %}
+
+    </div></div>
+
+{% include "_info-side.html" %}
+
+    <nav id="nav-buttons">
+        <button id="nav-prev">Prev</button>
+        <button id="nav-next">Next</button>
+    </nav>
+
+    <div class="clear"></div>
+
+{% include "_footer.html" %}
+  </div>
+  <div id="loading">loading...</div>
+
+{% include "_messages.html" %}
+
+{% include "_scripts-base.html" %}
+{% include "_scripts-keywords.html" %}
+
+  <script type="text/javascript" src="/js/jquery.humane.js"></script>
+  <script type="text/javascript">
+    $( function() {
+      $.getJSON('/favorites', function(data) {
+        if (data && data.keywords)
+          $('#keyword-list').trigger('favorites', [data.keywords])
+        if (data && data.loggedin)
+          $('.loggedin').fadeIn();
+      });
+
+      var nextUpdate = function() {
+        $.getJSON('/trends/last?nocache', function(data) {
+          if (!data.success) return;
+          $('#nextupdate .time').attr('title', data.next).humaneDates();
+          $('#nextupdate').fadeIn();
+          var updateAt = new Date(data.next),
+              updateIn = updateAt.getTime() - (new Date()).getTime(); // msecs
+          if (updateIn > 0) {
+            $('#nextupdate .tense').text('next');
+            $('#nextupdate').data('past', false);
+            clearTimeout($('#nextupdate').data('timeout'));
+            $('#nextupdate').data('timeout', setTimeout(function() {
+              if ($('#autoupdate .status').data('status') == 'true' || $('#autoupdate .status').data('status') == 'true') {
+                $('#day').change();
+              }
+              nextUpdate();
+            }, updateIn));
+          } else {
+            $('#nextupdate').data('past', true);
+            $('#nextupdate .tense').text('last');
+          }
+        });
+      }
+      nextUpdate();
+      $('#autoupdate').click(function(){
+        var $s = $(this).find('.status'), s;
+        if ($s.data('status') == 'true' || $s.data('status') === true) {
+          s = 'false'; t = 'off';
+        } else {
+          s  ='true'; t = 'on';
+        }
+        $.post('/home/set', {name:'autoupdate',value:s});
+        $s.data('status', s).text(t);
+        if (t == 'on' && $('#nextupdate').data('past')) nextUpdate();
+      });
+    });
+  </script>
+</body>
+</html>

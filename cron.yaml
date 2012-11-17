@@ -1,0 +1,8 @@
+cron:
+- description: hourly trend fetching
+  url: /trends/fetch
+  schedule: every 1 hours
+
+- description: daily trend summarizing
+  url: /trends/fetch
+  schedule: every day 00:02

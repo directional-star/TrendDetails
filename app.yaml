@@ -1,0 +1,56 @@
+application: keywords-dev
+version: 2-c
+runtime: python
+api_version: 1
+
+handlers:
+- url: /favicon.ico
+  static_files: static/favicon.ico
+  upload: static/favicon.ico
+
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+
+- url: /app.crx
+  static_files: webstore/rankspyder.crx
+  upload: webstore/rankspyder.crx
+
+- url: /css
+  static_dir: static/css
+
+- url: /img
+  static_dir: static/img
+
+- url: /js
+  static_dir: static/js
+
+- url: /sitemap.xml
+  script: trends.py
+
+- url: /trends/.*
+  script: trends.py
+
+- url: /api/.*
+  script: api.py
+
+- url: /event.*
+  script: event.py
+
+- url: /logout
+  script: home.py
+
+- url: /home.*
+  script: home.py
+
+- url: /badges
+  script: home.py
+
+- url: /jserror.*
+  script: jserror.py
+
+- url: /favorites.*
+  script: favorites.py
+
+- url: /.*
+  script: index.py

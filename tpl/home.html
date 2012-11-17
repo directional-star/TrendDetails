@@ -1,0 +1,59 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DS Trendy News: user home</title>
+  {% include "_ga.html" %}
+  <style type="text/css">
+  body.loading #box {opacity:0;}
+  body.loading #loading {display:block;}
+  body.loading #messages {display:none;}
+  </style>
+</head>
+<body class="loading">
+  <div id="box">
+    <h1><a href="http://directionalstar.com" title="Directional Star" target="_blank"><img id="logo" src="/img/logo.png">DS</a> <a href="/" title="home">Trendy News</a></h1>
+    <h2>Manage News and Information Overload. Identify Trends. Subscribe Today</h2>
+
+    <div id="oneside">
+      <p><a href="/">&larr; back to the hot topics</a></p>
+      <p><a href="/badges">view your badges</a></p>
+
+      <h3>User settings</h3>
+      <dl id="settings">
+      {% for name,data in settings.items %}
+        <dt class="label">{{ data.label }}</dt>
+          <dd class="input">{{ data.input|safe }}</dd>
+          <dd class="help">{{ data.help }}</dd>
+      {% endfor %}
+      </dl>
+    </div>
+{% include "_footer.html" %}
+  </div>
+  <div id="loading">loading...</div>
+{% include "_messages.html" %}
+{% include "_scripts-base.html" %}
+
+  <script type="text/javascript" src="/js/fg-menu/fg.menu.js"></script>
+  <link rel="stylesheet" type="text/css" href="/js/fg-menu/fg.menu.css">
+  <style type="text/css">
+    #event-select {display: none;}
+  </style>
+  <script type="text/javascript">
+    $( function() {
+      $('#settings select').change(function(e) {
+        var $input = $(this),
+            $dd = $input.parent('dd').addClass('loading').removeClass('success fail');
+
+        $.post('/home/set', {name:$input.attr('name'),value:$input.val()}, function(data) {
+          $dd.removeClass('loading');
+          if (data.success) {
+            $dd.addClass('success');
+          } else {
+            $dd.addClass('fail');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

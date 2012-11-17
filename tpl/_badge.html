@@ -1,0 +1,14 @@
+<div class="badge">
+  <div class="icon"><img src="img/badges/{{ badge.badge.icon }}.png"></div>
+  <div class="data">
+    <div class="name">{{ badge.badge.name }}</div>
+    <div class="desc">{{ badge.badge.desc }}</div>
+    <div class="date">{{ badge.badge.date }}</div>
+{% if badge.edit %}
+    <div class="target">{{ badge.badge.target }} / {{ badge.badge.action }}</div>
+{% endif %}
+  </div>
+{% if badge.edit %}
+  <div class="delete"><a href="/badges?delete={{ badge.key }}" title="delete badge">x</a></div>
+{% endif %}
+</div>

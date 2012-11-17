@@ -1,0 +1,51 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DS Trendy News: favorites</title>
+  {% include "_ga.html" %}
+  <style type="text/css">
+  body.loading #box {opacity:0;}
+  body.loading #loading {display:block;}
+  body.loading #messages {display:none;}
+  </style>
+</head>
+<body class="loading">
+  <div id="box">
+    <h1><a href="http://directionalstar.com" title="Directional Star" target="_blank"><img id="logo" src="/img/logo.png">DS</a> <a href="/" title="home">Trendy News</a></h1>
+    <h2>Manage News and Information Overload. Identify Trends. Subscribe Today</h2>
+
+    <div id="keyword-side"><div id="keyword-side-inner">
+        <h2>Your favorite keywords</h2>
+        <div class="keyword-notes">list some <a href="/">hot topics</a> instead</div>
+
+        {% if not keywords %}
+            <div class="keyword-empty">You don't have any favorites yet. Choose some from the <a href="/">daily hot topics</a>.</div>
+        {% endif %}
+
+{% include "_keyword-list.html" %}
+
+    </div></div>
+
+{% include "_info-side.html" %}
+
+    <nav id="nav-buttons">
+        <button id="nav-prev">Prev</button>
+        <button id="nav-next">Next</button>
+    </nav>
+
+    <div class="clear"></div>
+{% include "_footer.html" %}
+  </div>
+  <div id="loading">loading...</div>
+
+{% include "_messages.html" %}
+
+{% include "_scripts-base.html" %}
+{% include "_scripts-keywords.html" %}
+
+  <script type="text/javascript">
+    $( function() {
+    });
+  </script>
+</body>
+</html>

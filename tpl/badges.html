@@ -1,0 +1,92 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DS Trendy News: user home</title>
+  {% include "_ga.html" %}
+  <style type="text/css">
+  body.loading #box {opacity:0;}
+  body.loading #loading {display:block;}
+  body.loading #messages {display:none;}
+  </style>
+</head>
+<body class="loading">
+  <div id="box">
+    <h1><a href="http://directionalstar.com" title="Directional Star" target="_blank"><img id="logo" src="/img/logo.png">DS</a> <a href="/" title="home">Trendy News</a></h1>
+    <h2>Manage News and Information Overload. Identify Trends. Subscribe Today</h2>
+
+    <div id="oneside">
+        <h3>Your Badges</h3>
+        {% if badges|length %}
+          {% for badge in badges %}
+            {% include "_badge.html" %}
+          {% endfor %}
+        {% else %}
+          You don't have any badges yet.
+        {% endif %}
+        <div class="clear"></div>
+
+      {% if admin %}
+        <h3>Administer badges</h3>
+        {% for badge in allbadges %}
+          {% include "_badge.html" %}
+        {% endfor %}
+        <div class="clear"></div>
+        <div><form method="post" action="/badges">
+          Add new badge
+          <ul>
+            <li><input type="text" name="name" placeholder="badge name"></li>
+            <li><input type="text" name="desc" placeholder="badge description"></li>
+            <li><button id="event-button" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all">base event</button>
+              <div id="event-select"><ul>
+                <li><a href="#">keyword</a><ul><li><a href="#">click</a></li><li><a href="#">favorite</a></li></ul></li>
+                <li><a href="#">nav</a><ul><li><a href="#">prev</a></li><li><a href="#">next</a></li></ul></li>
+                <li><a href="#">date</a><ul><li><a href="#">changed</a></li></ul></li>
+                <li><a href="#">ordering</a><ul><li><a href="#">changed</a></li></ul></li>
+              </ul></div>
+              <input type="hidden" name="target" id="badge-target">
+              <input type="hidden" name="action" id="badge-action">
+            </li>
+            <li><input type="text" name="after" placeholder="trigger after # of events"></li>
+            <li><input type="text" name="icon" placeholder="icon image name (e.g: newbie)"></li>
+            <li><input type="submit" name="add"></li>
+          </ul>
+        </form></div>
+      {% endif %}
+    </div>
+{% include "_footer.html" %}
+  </div>
+  <div id="loading">loading...</div>
+{% include "_messages.html" %}
+{% include "_scripts-base.html" %}
+
+  <script type="text/javascript" src="/js/fg-menu/fg.menu.js"></script>
+  <link rel="stylesheet" type="text/css" href="/js/fg-menu/fg.menu.css">
+  <style type="text/css">
+    #event-select {display: none;}
+  </style>
+  <script type="text/javascript">
+    $( function() {
+      $('#event-button').fgmenu({
+        content: $('#event-select').html(),
+        crumbDefaultText: 'deftext',
+        flyOut: true,
+        selection: function(item) {
+          var target, action;
+          var txts = $(item).parents('li[role=menuitem]').find('> a').map(function(){return $(this).text()}).get().reverse();
+
+          $('#badge-target').val(txts[0]);
+          $('#badge-action').val(txts[1]);
+
+          $('button.fg-button').text(txts.join(" / "));
+
+          return false;
+        }
+      });
+      $('div.badge div.delete a').click(function() {
+        $.post($(this).attr('href'), function() {window.location.reload()});
+        return false;
+      })
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+html, body {width: 100%; height: 100%; margin: 0; padding: 0; font-family: Helvetica, Verdana, Arial, sans serif;}
+#box
+{width: 1200px; height: 100%; margin: 0; padding: 10px; position: relative; opacity: 1;
+-moz-transition:opacity 0.2s ease-in; -webkit-transition:opacity 0.2s ease-in; -o-transition:opacity 0.2s ease-in; transition:opacity 0.2s ease-in;}
+#loading
+{font-size: 20px; color: #aaa; padding: 50px; font-weight: bold; display:none;}
+
+.clear {clear: both;}
+
+h1 {height:45px;line-height:90px;margin-top:0;}
+#logo {float:left;margin-right:10px;width:60px;}
+h1 a {color:#000;text-decoration:none;}
+h2 {font-size: 15px; color: #555; font-weight: normal;}
+
+#topright
+{position: absolute; top: 10px; right: 160px; font-size: 12px; color: #777; text-align: right; text-transform: lowercase;}
+#nextupdate { display: none;}
+#autoupdate {color: blue; cursor: pointer;}
+#autoupdate .status {color: #66f;}
+
+#keyword-side
+{width: 300px; padding: 5px 10px; border: 2px solid #aaa; float: left; position: absolute; overflow-y: auto; background: white;}
+#info-side
+{width: 700px; margin-left: 350px;}
+#info-left
+{float:left;}
+#info-right
+{float:right;}
+
+.ui-widget
+{font-size: 13px !important;}
+
+#nav-buttons
+{position: fixed; left: 1085px;}
+#nav-buttons button
+{width: 50px; height: 50px; border: 2px solid #aaa; background: #eee; color: #555; border-radius: 3px; display: block; margin: 10px 0; font-weight: bold; font-variant: small-caps; cursor: pointer;}
+#nav-buttons button:hover
+{background-color: #fff; color: #000; border-color: #777;}
+#nav-buttons button.inactive, #nav-buttons button.inactive:hover
+{background-color: #bbb; color: #777;}
+
+#keyword-side h2
+{font-size: 16px; margin-bottom: 0;}
+#keyword-date
+{color: blue; cursor:pointer;}
+button.ui-datepicker-trigger
+{background: none; border: none;}
+div.keyword-notes
+{font-size: 11px; color: #999;}
+div.keyword-notes a
+{color: blue !important;}
+div.keyword-empty
+{margin-top: 20px; color: #800;}
+#keyword-ordering
+{color: blue; text-decoration: underline; cursor: pointer;}
+#keyword-list li
+{line-height: 24px; padding-left: 1em; text-indent: -1em; position: relative;}
+#keyword-list li a
+{color: blue !important; display: block; width: 180px;}
+#keyword-list li.fav
+{}
+#keyword-list li.active
+{color: #007; font-weight: bold; text-decoration: none;}
+#keyword-list li span.favorite
+{display: inline-block; width: 24px; height: 24px; position: absolute; top: 0; right: 0; margin: 0; padding: 0; background: transparent url(../img/favorite-empty-24.png) 0 0 no-repeat; cursor: pointer;}
+#keyword-list li.fav span.favorite
+{display: inline-block; background-image: url(../img/favorite-24.png);}
+#keyword-list li:hover span.favorite
+{background-image: url(../img/favorite-add-24.png);}
+#keyword-list li.fav:hover span.favorite
+{background-image: url(../img/favorite-remove-24.png);}
+
+#messages
+{position: fixed; top: 10px; right: 10px; width: 300px;}
+
+.info-box
+{width: 340px; border: 2px solid #eee; overflow: hidden; margin-bottom: 10px;}
+
+.info-box h2
+{cursor: pointer; margin: 0; padding: 5px; background-color: #eee;}
+.info-box .results
+{padding: 5px;}
+
+.result h3 {font-size: 14px; margin: 20px 0 4px 0;}
+.result .info {color: #999; font-size: 11px;}
+.result p {font-size: 12px; margin-top: 8px;}
+
+.keyfocus {border-color:black !important;}
+
+#oneside {padding: 5px 10px; border: 2px solid #AAA;}
+
+#settings dt {font-weight: bold; margin-top:10px;}
+#settings dd.help {font-size:10px; color:#777;}
+
+div.badge {padding: 5px; margin: 10px; float: left; border: 2px solid #777; position: relative;}
+div.badge .icon {float: left;}
+div.badge .icon img {width: 64px;}
+div.badge .data {margin-left: 80px;}
+div.badge .data .name {font-weight: bold; font-variant: small-caps;}
+div.badge .data .desc {font-size: small; color: #777;}
+div.badge .delete {position: absolute; top: 3px; right: 3px; font-size: 10px;}
+div.badge .delete a { color: red; text-decoration: none;}
+span.badge-icon {width: 60px; height: 60px; background: transparent url(../img/badges/newbie.png) center center no-repeat; float: left; margin: 10px;}
+
+footer {text-align: right; color: #aaa; padding: 5px 0;}
+footer a {text-decoration: none;}

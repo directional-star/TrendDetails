@@ -1,0 +1,239 @@
+  <script type="text/javascript" src="/js/jquery.twitter.search.js"></script>
+  <script type="text/javascript" src="/js/keywords.js"></script>
+  <script type="text/javascript" src="/js/keywordsKeydown.js"></script>
+
+  <script type="text/javascript">
+    $( function() {
+      $('.results').bind('reload', function() {
+        Keywords.fetch($(this), $('#keyword').val());
+      });
+      $('.results').delegate('.result a', 'click', function(e) {
+        if (e.originalEvent)
+        keywordsEvent(['article', 'click', $(this).parents('.results').data('plugin')]);
+      });
+
+      $('.info-box h2').click( function() {
+          $(this).parent().children('.results').toggle().trigger('reload');
+      });
+
+      $('#keyword').change(function() {
+        $('.results:visible').trigger('reload');
+      });
+
+      $('#keyword-list').delegate('li a', 'click', function(e) {
+        var $li = $(this).parent(),
+          topic = $(this).text();
+        $li.addClass('active');
+        $li.siblings().removeClass('active');
+        $('#keyword').val(topic).change();
+
+        $('#nav-prev').toggleClass('inactive', $li.prev().length < 1)
+        $('#nav-next').toggleClass('inactive', $li.next().length < 1)
+
+        if (e.originalEvent)
+        keywordsEvent(['keyword', 'click', $(this).text()]);
+
+        window.location.hash = '#!'+encodeURIComponent(topic);
+        return false;
+      });
+      $('#keyword-list').delegate('li span.favorite', 'click', function(e) {
+          var keyword = $(this).parent().text();
+          $.post('/favorites', {keyword:keyword}, function(data) {
+              if (data.success) {
+                  $('#messages').notify('create', 'messages-success', {
+                    title: 'Success',
+                    text: data.message
+                  });
+                  $('#keyword-list').trigger('favorites', [data.keywords]);
+              } else if (data.redirect) {
+                  $('<div title="Log in"></div>').text(data.error).dialog({
+                        modal: true,
+                        resizable: false,
+                        draggable: false,
+                        buttons: {
+                            "Log in": function() {
+                                window.location = data.redirect;
+                            },
+                            "Cancel": function() {
+                                $(this).dialog('close');
+                            }
+                        }
+                  });
+              } else if (data.error) {
+                  $('#messages').notify('create', 'messages-error', {
+                      title: 'Error',
+                      text: data.error
+                  });
+              }
+          });
+
+          e.stopPropagation();
+          keywordsEvent(['keyword', 'favorite', keyword]);
+      });
+      $('#keyword-list').bind('favorites', function(e, keywords) {
+          if (!keywords) {
+            keywords = $(this).data('keywords');
+          } else {
+            $(this).data('keywords', keywords);
+          }
+          if (!keywords) return;
+
+          var $list = $(this);
+          $list.find('li.fav').removeClass('fav');
+          $list.find('li a').each( function() {
+              if ($.inArray($(this).text(), keywords) > -1) {
+                  $(this).parent('li').addClass('fav');
+              }
+          });
+      });
+      $('#nav-prev').click( function(e) {
+          $('#keyword-list li.active').prev().children('a').click();
+          if (e.originalEvent)
+          keywordsEvent(['nav', 'click', 'prev']);
+      });
+      $('#nav-next').click( function(e) {
+          $('#keyword-list li.active').next().children('a').click();
+          if (e.originalEvent)
+          keywordsEvent(['nav', 'click', 'next']);
+      });
+
+      $('#day').datepicker({
+        minDate: {{ minDate }},
+        maxDate: 0,
+        dateFormat: 'yy-mm-dd',
+        showOn: 'button',
+        buttonImage: '/img/calendar.gif',
+        onSelect: function(dateText, inst) {
+            $('#keyword-date').text(dateText == '{{ today }}' ? 'today' : dateText);
+            $('#day').change();
+            keywordsEvent(['date', 'changed', dateText]);
+        }
+      });
+      $('#keyword-date').click( function() {
+        $('#day').datepicker('show');
+      });
+      $('#keyword-ordering').click( function() {
+        var newvalue = $(this).data('ordering') == 'latest' ? 'popular' : 'latest';
+        var display = {'latest': 'latest first', 'popular': 'popularity'};
+
+        $(this).data('ordering', newvalue);
+        $(this).text(display[newvalue]);
+        $('#day').change();
+
+        keywordsEvent(['ordering', 'changed', newvalue]);
+      });
+      $('#day').change( function() {
+          Keywords.day($('#keyword-list'), $(this).val(), $('#keyword-ordering').data('ordering'), function(){
+              $('#keyword-list').trigger('favorites');
+          });
+      });
+
+      $(window).scroll( function() {
+          var $ks = $('#keyword-side');
+          var sT = $(window).scrollTop();
+          if (sT > $ks.data('top') - 10) {
+              if (!$ks.data('fixed')) {
+                  $ks.data('fixed', true);
+                  $ks.css({
+                      position: 'fixed',
+                      top: 10
+                  });
+              }
+
+          } else {
+              if ($ks.data('fixed')) {
+                  $ks.data('fixed', false);
+                  $ks.css({
+                      position: 'absolute',
+                      top: 'auto'
+                  });
+              }
+          }
+      }).resize( function() {
+          var h = $(this).height();
+          var kh = $('#keyword-side').height();
+          if (kh > h-20 || ($('#keyword-side-inner').height() > kh)) {
+              $('#keyword-side').css('height', h-40);
+              var jsp = $('#keyword-side').data('jsp');
+              if (jsp) jsp.reinitialise();
+          }
+          $('#nav-buttons').css('top', (h-$('#nav-buttons').height())/2);
+      }).resize();
+
+      $(window).keydown( keywordsKeydown);
+      $('#keyword-side, div.info-box').bind('keyfocus', function() {
+          $('.keyfocus').removeClass('keyfocus');
+          $(this).addClass('keyfocus');
+      });
+      $('#keyword-side').bind('keyfocus', function() {
+          $.scrollTo(this, {axis:'x',duration:500});
+      });
+      $('div.info-box').bind('keyfocus', function() {
+          $(this).find('a:focus').blur();
+          $.scrollTo(this, {over:-0.2,duration:500});
+      }).bind('keycustom', function(e, keyCode) {
+          var a = $(this).data('article'), keyName;
+          switch (keyCode) {
+            case $.ui.keyCode.ENTER:
+                keyName = 'enter';
+                if (!$(this).find('a:focus').click().length)
+                $(this).find('h2').click();
+                break;
+
+            case 74: // J
+                keyName = 'J';
+                if (typeof a=='undefined') a = -1;
+                $(this).find('a').eq(++a).focus();
+                break;
+            case 75: // K
+                keyName = 'K';
+                if (typeof a=='undefined') a = 0;
+                $(this).find('a').eq(--a).focus();
+                break;
+
+            default:
+              return;
+          }
+          $(this).data('article', a);
+
+          keywordsEvent(['keypress', keyName, $(this).find('a').eq(a).attr('href'), a]);
+      });
+
+      // INIT
+
+      // HASHBANG#!
+      var bangA;
+      if (window.location.hash.length
+        && window.location.hash.substring(0,2) == '#!'
+        && window.location.hash.length > 3) {
+        var bangTopic = decodeURIComponent(window.location.hash.substring(2));
+
+        $('#keyword-list li a').each(function() {
+          if ($(this).text() == bangTopic) {
+            bangA = $(this);
+            return false;
+          }
+        });
+
+        if (!bangA) {
+          $('#keyword').val(bangTopic);
+        }
+      }
+      // load initial topic
+      if (bangA) bangA.click();
+      else if ($('#keyword').val().length) $('#keyword').change();
+      else $('#keyword-list li:first a').click();
+
+      $('#keyword-side').data('top', $('#keyword-side').offset().top);
+      $('#keyword-side').jScrollPane({verticalGutter:30});
+      $.getJSON('/favorites', function(data) {if (data && data.keywords) $('#keyword-list').trigger('favorites', [data.keywords])});
+    });
+  </script>
+
+  <script type="text/html" id="tpl-keyword">
+{% include "_template_keyword.html" %}
+  </script>
+
+  <script type="text/html" id="tpl-result">
+{% include "_template_result.html" %}
+  </script>

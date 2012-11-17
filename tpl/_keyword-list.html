@@ -1,0 +1,9 @@
+        <ol id="keyword-list">
+        {% if keywords %}
+          {% for hotkeyword in keywords %}
+          {% include "_template_keyword.html"  %}
+          {% endfor %}
+        {% endif %}
+        </ol>
+        <input type="hidden" id="keyword" value="{{ keyword }}">
+
